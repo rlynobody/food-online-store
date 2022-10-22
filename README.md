@@ -8,4 +8,4 @@ My frist react food online store
 * React Router
 * SCSS
 
->Use < npm start run > in terminal to run build
+>Use <npm start run > in terminal to run build
