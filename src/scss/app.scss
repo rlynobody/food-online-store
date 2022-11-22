@@ -33,6 +33,22 @@ body {
     padding: 165px 0;
   }
 
+  &__error-info {
+    margin: 100px auto;
+    max-width: 500px;
+    text-align: center;
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 20px;
+    }
+  }
+
   &__title {
     margin: 35px 0;
   }
@@ -341,8 +357,14 @@ body {
 
   &--empty {
     margin: 0 auto;
-    width: 560px;
+    max-width: 560px;
     text-align: center;
+
+    @media (max-width: 375) {
+      .content {
+        padding: 0;
+      }
+    }
 
     h2 {
       font-size: 32px;
@@ -363,7 +385,7 @@ body {
 
     img {
       display: block;
-      width: 300px;
+      max-width: 300px;
       margin: 45px auto 60px;
     }
 

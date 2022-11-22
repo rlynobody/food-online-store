@@ -1,13 +1,19 @@
 .root {
     position: relative;
-    left: -120px;
+    max-width: 300px;
+    //left: -120px;
+    @media (max-width: 430px) {
+        .input {
+            max-width: 180px;
+        }
+    }
 }
 
 .input {
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 12px 20px;
     padding-left: 42px;
-    width: 300px;
+    max-width: 300px;
     border-radius: 10px;
     font-size: 16px;
 

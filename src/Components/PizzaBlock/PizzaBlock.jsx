@@ -1,14 +1,33 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  addItem,
+  removeItem,
+  selectCartItemById,
+} from "../../Redux/slices/cartSlice";
 
 function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
   //Деструктаризация props
+  const dispatch = useDispatch();
+  const cartItem = useSelector(selectCartItemById(id));
   const [pizzaCount, setPizzaCount] = React.useState(0); // API hook useState, 1. Сама переменная 2. Функция обновления состояния
   const [activeType, setActiveType] = React.useState(0);
   const [activeSize, setActiveSize] = React.useState(0);
 
+  const addedCount = cartItem ? cartItem.count : 0;
+
   const onClickAdd = () => {
-    setPizzaCount(pizzaCount + 1);
+    const item = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: typeNames[activeType],
+      size: sizes[activeSize],
+    };
+    dispatch(addItem(item));
   };
 
   const typeNames = ["тонкое", "традиционное"];
@@ -16,7 +35,9 @@ function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        <Link to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        </Link>
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
@@ -35,6 +56,7 @@ function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
             {/* рендер массива размеров пицц */}
             {sizes.map((size, i) => (
               <li
+                key={i}
                 onClick={() => setActiveSize(i)}
                 className={activeSize === i ? "active" : ""}
               >
@@ -63,7 +85,7 @@ function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
               />
             </svg>
             <span>Добавить</span>
-            <i>{pizzaCount}</i>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>

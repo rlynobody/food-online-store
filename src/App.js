@@ -1,37 +1,41 @@
 import logo from './logo.svg';
 import React from 'react';
 import './scss/app.scss';
-import Header from './Components/Header'
-import Categories from './Components/Categories';
-import Sort from './Components/Sort';
+import Header from './Components/Header';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import NotFound from './pages/NotFound';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import FullPizza from './pages/FullPizza';
+import { BrowserRouter, Routes, Route, Outlet} from 'react-router-dom';
+import MainLayout from './layouts/MainLayout';
 
-export const SearchContext = React.createContext();
-
+// function Parent ({ children }) {
+//   return (
+//     <div>
+//       <h1>Заголовок</h1>
+//       <Outlet />
+//       <h4>123123123</h4>
+//     </div>
+//   );
+// }
 
 function App() {
-  const [searchValue, setSearchValue] = React.useState('');
-  console.log(searchValue, "Input changed:");
   return (
-    <div className="wrapper">
-      {/* Provider оповещает все вложенные элементы, о том что есть контекст */}
-      <SearchContext.Provider value={{searchValue, setSearchValue}}>
-      <Header />
-      <div className="content">
-        <div className="container">
+    // <div className="wrapper">
+    //   <Header />
+    //   <div className="content">
+    //     <div className="container">
           <Routes> 
-            <Route path='/' element={<Home/>} />
-            <Route path='/cart' element={<Cart />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path='/' element={<MainLayout />}>
+              <Route path='' element={<Home/>} />
+              <Route path='/cart' element={<Cart />} />
+              <Route path='/pizza/:id' element={<FullPizza/>}/>
+              <Route path='*' element={<NotFound />} />
+            </Route>
           </Routes>
-          {/* <Cart /> */}
-        </div>
-      </div>
-      </SearchContext.Provider>
-    </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 }
 

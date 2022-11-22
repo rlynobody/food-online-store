@@ -6,6 +6,10 @@
   background-color: #fff;
   z-index: 1000;
 
+  &__cart {
+    margin-left: 15px;
+  }
+
   @media (max-width: 430px) {
     display: flex;
     position: fixed;

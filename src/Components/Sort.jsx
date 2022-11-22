@@ -1,22 +1,44 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSort, setSort } from "../Redux/slices/filterSlice";
 
-function Sort({ value, onChangeSort }) {
+export const list = [
+  { name: "По убыванию популярности", sortProperty: "rating" },
+  { name: "По возрастанию популярности", sortProperty: "-rating" },
+  { name: "По убыванию цены", sortProperty: "price" },
+  { name: "По возрастанию цены", sortProperty: "-price" },
+  { name: "от А до Я", sortProperty: "-title" },
+  { name: "от Я до А", sortProperty: "title" },
+];
+
+function Sort() {
+  const dispatch = useDispatch();
+  const sort = useSelector(selectSort);
+  const sortRef = React.useRef();
   const [isVisible, setIsVisible] = React.useState(false);
-  const list = [
-    { name: "По убыванию популярности", sortProperty: "rating" },
-    { name: "По возрастанию популярности", sortProperty: "-rating" },
-    { name: "По убыванию цены", sortProperty: "price" },
-    { name: "По возрастанию цены", sortProperty: "-price" },
-    { name: "от А до Я", sortProperty: "-title" },
-    { name: "от Я до А", sortProperty: "title" },
-  ];
 
   const onClickListItem = (index) => {
-    onChangeSort(index);
+    dispatch(setSort(index));
     setIsVisible(false);
   };
+
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setIsVisible(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+
+    //Обработчик на unmount, удаляем eventlistener чтобы
+    //не допустить бесконечное создание eventListener
+    //и не допустить утечку памяти
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -31,7 +53,7 @@ function Sort({ value, onChangeSort }) {
           />
         </svg>
         <b>Сортировка:</b>
-        <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
+        <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
@@ -41,7 +63,7 @@ function Sort({ value, onChangeSort }) {
                 key={index}
                 onClick={() => onClickListItem(obj)}
                 className={
-                  value.sortProperty === obj.sortProperty ? "active" : ""
+                  sort.sortProperty === obj.sortProperty ? "active" : ""
                 }
               >
                 {obj.name}
